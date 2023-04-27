@@ -4,6 +4,7 @@ export enum TableName {
   Category = 'Category',
   Subcategory = 'Subcategory',
   Grid = 'grids',
+  FAQ = 'faqs',
 }
 
 export const withoutTimestamps = {

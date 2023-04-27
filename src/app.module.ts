@@ -6,6 +6,7 @@ import {DatabaseModule} from './database/database.module';
 import dotEnv = require('dotenv');
 import {CategoryModule} from './category/category.module';
 import {SubcategoryModule} from './subcategory/subcategory.module';
+import {FaqModule} from './faq/faq.module';
 dotEnv.config();
 @Module({
   imports: [
@@ -13,6 +14,7 @@ dotEnv.config();
     ProductModule,
     CategoryModule,
     SubcategoryModule,
+    FaqModule,
   ],
   controllers: [AppController],
   providers: [AppService],

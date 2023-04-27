@@ -3,7 +3,7 @@ import {
   Body,
   Controller,
   Get,
-  Param,
+  Param, Patch,
   Post,
   Query,
   UploadedFiles,
@@ -15,7 +15,17 @@ import {CreateProductDto} from './product.dto';
 
 @Controller('api/product')
 export class ProductController {
-  constructor(private readonly productService: ProductService) {
+  constructor(private readonly productService: ProductService) {}
+
+  @Patch()
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      { name: 'imageFile', maxCount: 1 },
+      { name: 'imagesFiles', maxCount: 6, },
+    ]),
+  )
+  updateProduct() {
+    return this.productService.update();
   }
 
   @Post()
@@ -47,6 +57,7 @@ export class ProductController {
   ){
     return this.productService.getOne({ id })
   }
+
   @Get()
   findAll(
     @Query('categoryId') categoryId?: number,

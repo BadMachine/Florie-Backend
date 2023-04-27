@@ -11,11 +11,13 @@ export class ProductService extends ServiceWithSpaces {
   }
 
   async create(data: CreateProductDto) {
-    console.log(data);
-    return {};
-    // const product = await Product.create({ ...data });
-    //
-    // return product;
+    const product = await Product.create({ ...data });
+
+    return product;
+  }
+
+  async update() {
+    return {}
   }
 
   async getAll({ categoryId }: FindAllProductsDTO) {

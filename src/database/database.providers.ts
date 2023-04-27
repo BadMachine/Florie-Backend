@@ -1,5 +1,5 @@
 import { Sequelize } from 'sequelize-typescript';
-import {Product, Category, Grid, Subcategory} from '../models';
+import {Product, Category, Grid, Subcategory, FAQ} from '../models';
 import dotEnv = require('dotenv');
 dotEnv.config();
 
@@ -37,6 +37,7 @@ export const databaseProviders = [
         Category,
         Grid,
         Subcategory,
+        FAQ,
       ]);
 
       // await sequelize.sync();

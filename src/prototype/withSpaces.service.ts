@@ -82,6 +82,7 @@ export class ServiceWithSpaces implements OnModuleInit {
   // Main hook methods section
   async beforeCreateProduct(instance: Product) {
     await this.uploadImage(instance);
+    await this.uploadImages(instance);
   }
 
   // async afterCreatePaper(instance: PaperModel) {
@@ -129,43 +130,38 @@ export class ServiceWithSpaces implements OnModuleInit {
   //   await this.deleteFolder(instance);
   // }
 
-  // Utility methods
-  // async uploadImages(instance: PaperModel) {
-  //   const mainPath = `${this.tableName}/${instance.id}`;
-  //
-  //   if (instance?.images?.length) {
-  //     const imageNames = Array(instance.images.length)
-  //       .fill(null)
-  //       .map(() => randomUUID());
-  //     const largeImages = instance.images.map(async (image, idx) => {
-  //       const { large, format } = await this.createResizedCopies(image.buffer);
-  //       return await this.spaces.uploadFile(
-  //         this.spaces.createMulterLikeFile(large, ''),
-  //         [mainPath, 'large'],
-  //         `${imageNames[idx]}.${format}`,
-  //       );
-  //     });
-  //
-  //     const smallImages = instance.images.map(async (image, idx) => {
-  //       const { small, format } = await this.createResizedCopies(image.buffer);
-  //       return await this.spaces.uploadFile(
-  //         this.spaces.createMulterLikeFile(small, ''),
-  //         [mainPath, 'small'],
-  //         `${imageNames[idx]}.${format}`,
-  //       );
-  //     });
-  //
-  //     const imagesUrls = await Promise.all(largeImages);
-  //     await Promise.all(smallImages);
-  //
-  //     await this.model.update(
-  //       {
-  //         imagesUrls,
-  //       },
-  //       { where: { id: instance.id } },
-  //     );
-  //   }
-  // }
+  //Utility methods
+  async uploadImages(instance: Product) {
+    const mainPath = `${this.tableName}/${instance.id}`;
+
+    if (instance?.imagesFiles?.length) {
+      const imageNames = Array(instance.imagesFiles.length)
+        .fill(null)
+        .map(() => randomUUID());
+      const largeImages = instance.imagesFiles.map(async (image, idx) => {
+        const { large, format } = await this.createResizedCopies(image.buffer);
+        return await this.spaces.uploadFile(
+          this.spaces.createMulterLikeFile(large, ''),
+          [mainPath, 'large'],
+          `${imageNames[idx]}.${format}`,
+        );
+      });
+
+      const smallImages = instance?.imagesFiles.map(async (image, idx) => {
+        const { small, format } = await this.createResizedCopies(image.buffer);
+        return await this.spaces.uploadFile(
+          this.spaces.createMulterLikeFile(small, ''),
+          [mainPath, 'small'],
+          `${imageNames[idx]}.${format}`,
+        );
+      });
+
+      const imagesUrls = await Promise.all(largeImages);
+      await Promise.all(smallImages);
+
+      instance.cardImages = imagesUrls;
+    }
+  }
 
   async uploadImage(instance: Product) {
     if (!instance?.id) {

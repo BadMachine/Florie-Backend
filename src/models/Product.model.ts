@@ -5,7 +5,7 @@ import {
   AutoIncrement,
   BeforeCreate,
   Column,
-  DataType,
+  DataType, Default,
   Index,
   Model,
   PrimaryKey,
@@ -53,7 +53,8 @@ export class Product extends Model<ProductAttributes> {
   @Column(DataType.INTEGER)
   categoryId: number;
 
-  @AllowNull(false)
+  @Default(null)
+  @AllowNull(true)
   @Column(DataType.INTEGER)
   subcategoryId: number;
 
@@ -72,6 +73,9 @@ export class Product extends Model<ProductAttributes> {
   /** Virtual fields **/
   @Column(DataType.VIRTUAL)
   imageFile: Express.Multer.File;
+
+  @Column(DataType.VIRTUAL)
+  imagesFiles: Express.Multer.File[];
 
   @AfterValidate
   static test(instance) {

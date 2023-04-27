@@ -1,12 +1,11 @@
 import {IsBoolean, IsUUID, IsNotEmpty, IsNumber, IsOptional, IsString} from 'class-validator';
 import {ApiProperty} from '@nestjs/swagger';
-import {IsNumeric} from 'sequelize-typescript';
 
 export class CreateProductDto {
   @ApiProperty({
     example: 'Product name',
   })
-  @IsString()
+  @IsString({ message: 'Name must be a string'})
   @IsNotEmpty()
   name: string;
 
@@ -14,28 +13,33 @@ export class CreateProductDto {
     description: 'Product name',
     example: 'This is description of product #1',
   })
-  @IsString()
-  @IsNotEmpty()
+  @IsString({ message: 'Info must be a string'})
+  @IsNotEmpty({ message: 'Info mustnt be empty'})
   info: string;
 
   @ApiProperty({
     example: '56.65',
   })
+  @IsNumber()
   price: number;
 
   @ApiProperty({
     example: '1',
   })
+  @IsNumber()
   categoryId: number;
 
   @ApiProperty({
     example: '2',
   })
-  subcategoryId: number;
+  @IsOptional()
+  @IsNumber()
+  subcategoryId: number | null;
 
   @ApiProperty({
     example: '5.5',
   })
+  @IsNumber()
   rating: number;
 
   @ApiProperty({ type: String, format: 'binary' })
